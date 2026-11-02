@@ -1,10 +1,13 @@
 import AuthForm from "./AuthForm";
+import { useLocation } from "react-router";
 
 export default function Auth() {
+    const location = useLocation();
+    const isLogin = location.state?.isLogin ?? true;
+    
     return (
-        <>
-            <h1>This is Auth</h1>
-            <AuthForm isLogin={false}/>
-        </>
-    )
+        <main>
+            <AuthForm isLogin={isLogin} />
+        </main>
+    );
 }

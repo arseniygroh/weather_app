@@ -4,7 +4,7 @@ import {useNavigate} from "react-router"
 
 const passwordPattern = /^(?=.*[A-Za-z])(?=.*\d).{8,}$/;
 
-export default function AuthForm({ isLogin }) {
+export default function AuthForm({isLogin}) {
     const [errors, setErrors] = useState([]);
     const {login, register} = useAuth();
     const navigate = useNavigate();

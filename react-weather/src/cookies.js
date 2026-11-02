@@ -14,7 +14,7 @@ export function getCookie(cookieName) {
     return null;
 }
 
-export function setCookie(name, value, days = 7) {
+export function setCookie(name, value, days) {
     let expires = "";
     if (days) {
         const date = new Date();

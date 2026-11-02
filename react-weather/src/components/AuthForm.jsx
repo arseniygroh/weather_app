@@ -1,14 +1,17 @@
 import { useState } from "react";
+import {useAuth} from "../context/AuthContext";
+import {useNavigate} from "react-router"
 
 const passwordPattern = /^(?=.*[A-Za-z])(?=.*\d).{8,}$/;
 
-export default function AuthForm({isLogin}) {
+export default function AuthForm({ isLogin }) {
     const [errors, setErrors] = useState([]);
+    const {login, register} = useAuth();
+    const navigate = useNavigate();
 
     function handleSubmit(e) {
         e.preventDefault();
-
-        setErrors([]);
+        setErrors([]); 
 
         const formData = new FormData(e.target);
         const {confirmPassword, password, username} = Object.fromEntries(formData);
@@ -28,7 +31,15 @@ export default function AuthForm({isLogin}) {
             setErrors(currentErrors);
             return;
         }
-        
+
+        const authError = isLogin ? login(username, password) : register(username, password);
+
+        if (authError) {
+            setErrors([authError]);
+        } else {
+            alert(isLogin ? "Logged in successfully!" : "Registered successfully!");
+            navigate("/");
+        }
     }
 
     return (
@@ -56,11 +67,11 @@ export default function AuthForm({isLogin}) {
             </form>
             {errors && errors.length > 0 && (
                 <ul>
-                    {errors.map((e, i) => {
-                        return <li key={i}>{e}</li>
-                    })}
+                    {errors.map((e, i) => (
+                        <li key={i}>{e}</li>
+                    ))}
                 </ul>
             )}
         </div>
-    )
+    );
 }

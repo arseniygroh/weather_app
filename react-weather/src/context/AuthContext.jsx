@@ -29,7 +29,21 @@ export function AuthProvider({children}) {
         return null;
     }
 
-    
+    function login(loginUsername, password) {
+        const storedUsers = JSON.parse(localStorage.getItem("users") || "[]");
+
+        const validUser = storedUsers.find(u => u.username === loginUsername && u.password === password);
+        if (!validUser) return "Invalid username or password.";
+        
+        setCookie("currentUser", JSON.stringify({username: loginUsername}), 1);
+        setUsername(loginUsername);
+        return null;
+    }
+
+    function logout() {
+        document.cookie = "currentUser=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+        setUsername(null);
+    }
 
     return (
         <AuthContext.Provider value={{ 

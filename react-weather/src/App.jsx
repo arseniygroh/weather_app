@@ -11,6 +11,7 @@ function App() {
   const [error, setError] = useState("");
   const navigate = useNavigate();
   const {isAuthenticated} = useAuth();
+  const [currentCity, setCurrentCity] = useState("");
 
   if (!isAuthenticated) navigate("/auth");
 
@@ -53,6 +54,7 @@ function App() {
     try {
       const data = await getWeatherUsingCityName(city, days);
       setWeatherData(data);
+      setCurrentCity(city);
     } catch(e) {
       setError(e.message);
     } finally {
@@ -65,29 +67,30 @@ function App() {
   return (
     <>
       <Header />
-      <main>
-        {isLoading && <p>Loading your local weather...</p>}
-        {error && <p>{error}</p>}
-        <form onSubmit={handleCustomForecast} action="" method="get">
-          <div>
+      <main className="dashboard-main">
+        {isLoading && <p className="status-message">Loading your local weather...</p>}
+        {error && <p className="status-message error">{error}</p>}
+        
+        <form className="search-form" onSubmit={handleCustomForecast} action="" method="get">
+          <div className="form-group">
             <label htmlFor="city">City</label>
             <input type="text" id="city" name="city" required />
           </div>
-          <div>
+          <div className="form-group">
             <label htmlFor="days">Period in days</label>
-            <input type="number" min={1} step={1} required id="days" name="days" />
+            <input type="number" min={1} step={1} required id="days" name="days" defaultValue={5} />
           </div>
           <button type="submit">Get forecast</button>
         </form>
         {weatherData && weatherData.daily && (
-          <section>
-            <h2>Forecast</h2>
+          <section className="forecast-section">
+            <h2>Forecast for {currentCity ? currentCity : "your current location"}</h2>
             {weatherData.current && (
-              <div>
+              <div className="current-weather">
                 <strong>Right Now:</strong> {weatherData.current.temperature_2m}°C, Humidity: {weatherData.current.relative_humidity_2m}%, Wind: {weatherData.current.wind_speed_10m} km/h
               </div>
             )}
-            <div>
+            <div className="cards-grid">
               {weatherData.daily.time.map((date, index) => (
                 <WeatherCard 
                   key={date}

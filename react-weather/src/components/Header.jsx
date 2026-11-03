@@ -5,14 +5,14 @@ export default function Header() {
     const {isAuthenticated, logout, username} = useAuth();
 
     return (
-        <header>
-            <Link to="/">Weather Discovery</Link>
+        <header className="app-header">
+            <Link to="/" className="logo">Weather Discovery</Link>
             <nav>
-                <ul>
+                <ul className="nav-links">
                     {isAuthenticated ? (
                         <>
-                        <li>Hello {username}</li>
-                        <li onClick={logout}>
+                        <li className="greeting">Hello, {username}</li>
+                        <li onClick={logout} className="logout-btn">
                             Log out
                         </li>
                         </>

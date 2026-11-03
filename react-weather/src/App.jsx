@@ -1,5 +1,5 @@
 import Header from "./components/Header";
-import { getWeatherUsingCoords } from "./http";
+import { getWeatherUsingCoords, getWeatherUsingCityName } from "./http";
 import { useState, useEffect } from "react";
 
 function App() {
@@ -35,12 +35,42 @@ function App() {
     }
   }, []);
 
+  async function handleCustomForecast(e) {
+    e.preventDefault();
+    setError("");
+    setIsLoading(true);
+
+    const formData = new FormData(e.target);
+    const {city, days} = Object.fromEntries(formData);
+    
+    try {
+      const data = await getWeatherUsingCityName(city, days);
+      setWeatherData(data);
+    } catch(e) {
+      setError(e.message);
+    } finally {
+      setIsLoading(false);
+    }
+
+  }
+
   return (
     <>
       <Header />
       <main>
         {isLoading && <p>Loading your local weather...</p>}
         {error && <p>{error}</p>}
+        <form onSubmit={handleCustomForecast} action="" method="get">
+          <div>
+            <label htmlFor="city">City</label>
+            <input type="text" id="city" name="city" required />
+          </div>
+          <div>
+            <label htmlFor="days">Period in days</label>
+            <input type="number" min={1} step={1} required id="days" name="days" />
+          </div>
+          <button type="submit">Get forecast</button>
+        </form>
       </main>
     </>
   );

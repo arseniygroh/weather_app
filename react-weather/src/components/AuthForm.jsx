@@ -1,6 +1,7 @@
 import { useState } from "react";
 import {useAuth} from "../context/AuthContext";
 import {useNavigate} from "react-router"
+import {Link} from "react-router";
 
 const passwordPattern = /^(?=.*[A-Za-z])(?=.*\d).{8,}$/;
 
@@ -43,7 +44,7 @@ export default function AuthForm({isLogin}) {
     }
 
     return (
-        <div>
+        <div className="auth-container">
             <header>
                 <h3>{isLogin ? "Welcome back!" : "Welcome guest!"}</h3>
                 <p>Fill in the form below with your credentials</p>
@@ -64,6 +65,11 @@ export default function AuthForm({isLogin}) {
                     </div>
                 )}
                 <button type="submit">{!isLogin ? "Register" : "Log in"}</button>
+                {isLogin ? (
+                    <p>Don't have an account yet? <Link to="/auth" state={{isLogin: false}}>Register</Link></p>
+                ) : (
+                    <p>Already have an account? <Link to="/auth" state={{isLogin: true}}>Log in</Link></p>
+                )}
             </form>
             {errors && errors.length > 0 && (
                 <ul>

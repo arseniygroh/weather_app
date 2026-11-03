@@ -2,11 +2,17 @@ import Header from "./components/Header";
 import { getWeatherUsingCoords, getWeatherUsingCityName } from "./http";
 import { useState, useEffect } from "react";
 import WeatherCard from "./components/WeatherCard";
+import {useNavigate} from "react-router"
+import { useAuth } from "./context/AuthContext";
 
 function App() {
   const [weatherData, setWeatherData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
+  const navigate = useNavigate();
+  const {isAuthenticated} = useAuth();
+
+  if (!isAuthenticated) navigate("/auth");
 
   useEffect(() => {
     const fetchWeather = async (latitude, longitude) => {

@@ -1,6 +1,7 @@
 import Header from "./components/Header";
 import { getWeatherUsingCoords, getWeatherUsingCityName } from "./http";
 import { useState, useEffect } from "react";
+import WeatherCard from "./components/WeatherCard";
 
 function App() {
   const [weatherData, setWeatherData] = useState(null);
@@ -72,6 +73,28 @@ function App() {
           </div>
           <button type="submit">Get forecast</button>
         </form>
+        {weatherData && weatherData.daily && (
+          <section>
+            <h2>Forecast</h2>
+            {weatherData.current && (
+              <div>
+                <strong>Right Now:</strong> {weatherData.current.temperature_2m}°C, Humidity: {weatherData.current.relative_humidity_2m}%, Wind: {weatherData.current.wind_speed_10m} km/h
+              </div>
+            )}
+            <div>
+              {weatherData.daily.time.map((date, index) => (
+                <WeatherCard 
+                  key={date}
+                  date={date}
+                  maxTemp={weatherData.daily.temperature_2m_max[index]}
+                  minTemp={weatherData.daily.temperature_2m_min[index]}
+                  precipProb={weatherData.daily.precipitation_probability_max[index]}
+                  maxWindSpeed={weatherData.daily.wind_speed_10m_max[index]}
+                />
+              ))}
+            </div>
+          </section>
+        )}
       </main>
     </>
   );

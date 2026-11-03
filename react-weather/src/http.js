@@ -1,5 +1,5 @@
 export async function getWeatherUsingCoords(coords, days) {
-    const res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${coords.latitude}&longitude=${coords.longitude}&daily=temperature_2m_max,temperature_2m_min&forecast_days=${days}&timezone=auto`);
+    const res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${coords.latitude}&longitude=${coords.longitude}&current=temperature_2m,relative_humidity_2m,wind_speed_10m&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max,wind_speed_10m_max&forecast_days=${days}&timezone=auto`);
     
     if (!res.ok) throw new Error("Failed to fetch weather data");
     

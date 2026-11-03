@@ -50,6 +50,7 @@ function App() {
       setError(e.message);
     } finally {
       setIsLoading(false);
+      e.target.reset();
     }
 
   }
